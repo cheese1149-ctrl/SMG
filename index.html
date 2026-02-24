@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Directory</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Serif+4:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #1a1208;
+      --paper: #f5f0e8;
+      --accent: #c8501a;
+      --rule: #d4c9b0;
+      --muted: #7a6f5e;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-weight: 300;
+      min-height: 100vh;
+      padding: 0 0 80px;
+    }
+    header {
+      padding: 60px 60px 40px;
+      border-bottom: 2px solid var(--ink);
+      display: flex;
+      align-items: flex-end;
+      gap: 40px;
+      position: relative;
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      left: 60px;
+      right: 60px;
+      height: 1px;
+      background: var(--ink);
+    }
+    .header-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+    .header-meta { margin-left: auto; text-align: right; }
+    .student-count {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .count-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      font-weight: 600;
+      display: block;
+      color: var(--ink);
+      line-height: 1;
+    }
+    .search-bar {
+      padding: 20px 60px;
+      border-bottom: 1px solid var(--rule);
+    }
+    .search-bar input {
+      background: transparent;
+      border: none;
+      border-bottom: 1.5px solid var(--ink);
+      padding: 8px 0;
+      width: 320px;
+      font-family: 'Source Serif 4', serif;
+      font-size: 0.95rem;
+      color: var(--ink);
+      outline: none;
+    }
+    .search-bar input::placeholder { color: var(--muted); }
+    .table-wrap { padding: 0 60px; }
+    table { width: 100%; border-collapse: collapse; }
+    thead tr { border-bottom: 2px solid var(--ink); }
+    th {
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 20px 16px 14px;
+      text-align: left;
+    }
+    th:first-child { padding-left: 0; width: 40px; }
+    th:nth-child(2) { width: 220px; }
+    tbody tr {
+      border-bottom: 1px solid var(--rule);
+      transition: background 0.15s;
+    }
+    tbody tr:hover { background: rgba(200,80,26,0.04); }
+    td { padding: 22px 16px; vertical-align: top; font-size: 0.95rem; line-height: 1.65; }
+    td:first-child {
+      padding-left: 0;
+      font-family: 'Playfair Display', serif;
+      font-size: 0.8rem;
+      color: var(--muted);
+      padding-top: 26px;
+    }
+    .student-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+    .student-desc { color: #3d3628; font-style: italic; font-size: 0.9rem; }
+    .no-results {
+      text-align: center;
+      padding: 80px 0;
+      color: var(--muted);
+      font-style: italic;
+      font-size: 1.1rem;
+    }
+    @media (max-width: 640px) {
+      header, .search-bar, .table-wrap { padding-left: 24px; padding-right: 24px; }
+      header { flex-direction: column; align-items: flex-start; gap: 16px; }
+      header::after { left: 24px; right: 24px; }
+      .header-meta { margin-left: 0; text-align: left; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <span class="header-label">Class Directory</span>
+    <h1>Students</h1>
+  </div>
+  <div class="header-meta">
+    <span class="count-num" id="count">0</span>
+    <span class="student-count">enrolled</span>
+  </div>
+</header>
+
+<div class="search-bar">
+  <input type="text" id="search" placeholder="Search by name or description…" oninput="filterTable()" />
+</div>
+
+<div class="table-wrap">
+  <table id="studentTable">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody id="tbody">
+
+      <!-- =====================================================
+           REPLACE THE EXAMPLE ROWS BELOW WITH YOUR STUDENTS
+           Copy a <tr> block and paste to add more students.
+           ===================================================== -->
+
+      <tr>
+        <td>01</td>
+        <td><div class="student-name">Alice Johnson</div></td>
+        <td><div class="student-desc">A curious and dedicated learner with a passion for mathematics and science. Always eager to help classmates understand difficult concepts.</div></td>
+      </tr>
+
+      <tr>
+        <td>02</td>
+        <td><div class="student-name">Ben Martinez</div></td>
+        <td><div class="student-desc">Creative writer and storyteller who brings unique perspectives to every discussion. Has a talent for making complex ideas feel accessible.</div></td>
+      </tr>
+
+      <tr>
+        <td>03</td>
+        <td><div class="student-name">Clara Nguyen</div></td>
+        <td><div class="student-desc">Quiet and methodical, Clara excels at research and critical thinking. Her attention to detail makes her work consistently outstanding.</div></td>
+      </tr>
+
+      <!-- ADD MORE STUDENTS HERE -->
+
+    </tbody>
+  </table>
+  <div class="no-results" id="noResults" style="display:none;">No students match your search.</div>
+</div>
+
+<script>
+  function updateCount() {
+    const rows = document.querySelectorAll('#tbody tr');
+    document.getElementById('count').textContent = String(rows.length).padStart(2, '0');
+  }
+
+  function filterTable() {
+    const q = document.getElementById('search').value.toLowerCase();
+    const rows = document.querySelectorAll('#tbody tr');
+    let visible = 0;
+    rows.forEach(row => {
+      const show = row.textContent.toLowerCase().includes(q);
+      row.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    document.getElementById('noResults').style.display = visible === 0 ? 'block' : 'none';
+    document.getElementById('count').textContent = String(visible).padStart(2, '0');
+  }
+
+  updateCount();
+</script>
+</body>
+</html>
